@@ -14,15 +14,11 @@ use App\Http\Controllers\RouteController;
 |
 */
 
-Artisan::command('inspire', function () {
-    $this->comment(Inspiring::quote());
-})->describe('Display an inspiring quote');
-
-Artisan::command('add', function () {
+Artisan::command('gad:add', function () {
 
     $dir = $this->ask('Path (from /var/www/)?');
     $branch = $this->ask('Branch?');
-    $reset = $this->confirm('Hard Reset?', 1);
+    $reset = (int) $this->confirm('Hard Reset?', 1);
 
     $aRoute = RouteController::add([
         'dir' => $dir,
@@ -36,4 +32,17 @@ Artisan::command('add', function () {
     ]));
     $this->line('Secret');
     $this->line($aRoute['secret']);
+});
+
+Artisan::command('gad:list', function () {
+
+    $aRoutes = RouteController::getAll();
+
+    foreach ($aRoutes as $sKey => $aRoute) {
+        $this->line($sKey . ' : ');
+
+        foreach ($aRoute as $sKey => $sItem) {
+            $this->line(' - ' . $sKey . ': ' . $sItem);
+        }
+    }
 });
