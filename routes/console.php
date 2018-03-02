@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Foundation\Inspiring;
+use App\Http\Controllers\RouteController;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,3 +17,21 @@ use Illuminate\Foundation\Inspiring;
 Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());
 })->describe('Display an inspiring quote');
+
+Artisan::command('add', function () {
+
+    $dir = $this->ask('Path (from /var/www/)?');
+    $branch = $this->ask('Branch?');
+    $reset = $this->confirm('Hard Reset?', 1);
+
+    $aRoute = RouteController::add([
+        'dir' => $dir,
+        'branch' => $branch,
+        'reset' => $reset,
+    ]);
+
+    $this->line('Route');
+    $this->line(url('deploy/' . $aRoute['id']));
+    $this->line('Secret');
+    $this->line($aRoute['secret']);
+});
