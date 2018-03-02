@@ -31,7 +31,9 @@ Artisan::command('add', function () {
     ]);
 
     $this->line('Route');
-    $this->line(url('deploy/' . $aRoute['id']));
+    $this->line(route('api.deploy', [
+        'id' => $aRoute['id']
+    ]));
     $this->line('Secret');
     $this->line($aRoute['secret']);
 });
